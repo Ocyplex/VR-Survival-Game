@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerStatus : MonoBehaviour
     public TextMeshProUGUI thirstStatusText;
     public TextMeshProUGUI hungerStatusText;
     public TextMeshProUGUI StaminaStatusText;
+    public SceneGameManager mySceneGameManager;
 
 
     public GameObject myPostionGO;
@@ -58,9 +60,7 @@ public class PlayerStatus : MonoBehaviour
     {
         float distance = Vector3.Distance(newPosition_, currentPostion_);
         Debug.Log("Player moved distance: " + distance);
-
         staminaStatus = staminaStatus - Mathf.Round(distance);
-        Debug.Log("Stamina:" + staminaStatus);
         StatusChanged(healthStatus, thirstStatus, hungerStatus, staminaStatus);
     }
 
@@ -116,7 +116,20 @@ public class PlayerStatus : MonoBehaviour
     {
         if(healthStatus <= 0)
         {
+            mySceneGameManager.GoToNextSene(2);
+        }
+    }
 
+    public void EatFood(int foodValue_)
+    {
+        if(hungerStatus < 100)
+        { 
+            hungerStatus = hungerStatus + foodValue_;
+            if(hungerStatus > 100)
+            {
+                hungerStatus = 100;
+            }
+            StatusChanged(healthStatus, thirstStatus, hungerStatus, staminaStatus);
         }
     }
 }

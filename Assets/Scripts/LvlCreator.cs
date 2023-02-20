@@ -15,15 +15,17 @@ public class LvlCreator : MonoBehaviour
     public GameObject stone1;
     public GameObject tree;
     public GameObject tree1;
-    public int treeChance = 8;
+    public int treeChance = 5;
+    private float treePosY = 3.65f;
+    public GameObject apple;
 
 
     private int sizeX = 10;
-    private int sizeY = 10;
+    private int sizeZ = 10;
     private int rand;
     private float stoneDirection;
     private float treeDirection;
-    private int sizeMap = 20;
+    private int sizeMap = 40;
 
 
     void Start()
@@ -34,8 +36,7 @@ public class LvlCreator : MonoBehaviour
 
     void CreateMap()
     {
-        int x = 0;
-        int y = 0;
+        int x = 0;;
         for (int i = 0; i < sizeMap; i += 10)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, i);
@@ -44,15 +45,15 @@ public class LvlCreator : MonoBehaviour
                 transform.position = new Vector3(j, transform.position.y, transform.position.z);
 
                 rand = Random.Range(0, 10);
-                if (rand <= 2)
+                if (rand == 0)
                 {
                     CreateStoneTerrain();
                 }
-                else if (rand >= 3 && rand < 9)
+                else if (rand > 0 && rand < 8)
                 {
                     CreateForestTerrain();
                 }
-                else if (rand == 9)
+                else if (rand >= 8)
                 {
                     CreateClayField();
                 }
@@ -67,25 +68,60 @@ public class LvlCreator : MonoBehaviour
     {
         for (int i = 0; i < sizeX; i++)
         {
-            for (int j = 0; j < sizeY; j++)
+            for (int j = 0; j < sizeZ; j++)
             {
-                rand = Random.Range(0, 2); //changed range from 3 to 2
-                Instantiate(stoneGround[rand], new Vector3(transform.position.x + i, 0f, transform.position.z + j), Quaternion.identity);
-                rand = Random.Range(0, 5);
+
+                rand = Random.Range(0, 100); 
+                if(rand < 90)
+                {
+                    rand = Random.Range(0, 2);
+                    Instantiate(stoneGround[rand], new Vector3(transform.position.x + i, 0f, transform.position.z + j), Quaternion.identity);
+                    rand = Random.Range(0, 5);
                 if (rand < 1)
                 {
-                    stoneDirection = Random.Range(0f, 180f);
-                    rand = Random.Range(0, 3);
-                    if (rand < 2)
-                    {
-                        Instantiate(stone, new Vector3(transform.position.x + i, transform.position.y + 0.5f, transform.position.z + j), (Quaternion.Euler(0f, stoneDirection, 0f)));
-                    }
-                    else
-                    {
-                        Instantiate(stone1, new Vector3(transform.position.x + i, transform.position.y + 0.5f, transform.position.z + j), (Quaternion.Euler(0f, stoneDirection, 0f)));
-                    }
+                    CreateStone(i, j);
+                }
+                }
+                else
+                {
+                    rand = Random.Range(0, 2);
+                    Instantiate(grasGround[rand], new Vector3(transform.position.x + i, 0f, transform.position.z + j), Quaternion.identity);
                 }
             }
+        }
+    }
+
+
+
+    private void CreateStone(int i_, int j_)
+    {
+        stoneDirection = Random.Range(0f, 180f);
+        rand = Random.Range(0, 3);
+        if (rand < 2)
+        {
+            Instantiate(stone, new Vector3(transform.position.x + i_, transform.position.y + 0.5f, transform.position.z + j_), (Quaternion.Euler(0f, stoneDirection, 0f)));
+        }
+        else
+        {
+            Instantiate(stone1, new Vector3(transform.position.x + i_, transform.position.y + 0.5f, transform.position.z + j_), (Quaternion.Euler(0f, stoneDirection, 0f)));
+        }
+    }
+
+    private void CreateTree(int i_, int j_)
+    {
+        treeDirection = Random.Range(0f, 180f);
+        rand = Random.Range(0, 100);
+        if (rand < 45)
+        {
+            Instantiate(tree, new Vector3(transform.position.x + i_, treePosY, transform.position.z + j_), (Quaternion.Euler(0f, treeDirection, 0f)));
+        }
+        else if(rand >= 45 && 90 >= rand)
+        {
+            Instantiate(tree1, new Vector3(transform.position.x + i_, treePosY, transform.position.z + j_), (Quaternion.Euler(0f, treeDirection, 0f)));
+        }
+        else if(rand > 90)
+        {
+            CreateStone(i_, j_);
         }
     }
 
@@ -94,23 +130,14 @@ public class LvlCreator : MonoBehaviour
     {
         for (int i = 0; i < sizeX; i++)
         {
-            for (int j = 0; j < sizeY; j++)
+            for (int j = 0; j < sizeZ; j++)
             {
                 rand = Random.Range(0, 2);
                 Instantiate(grasGround[rand], new Vector3(transform.position.x + i, 0f, transform.position.z + j), Quaternion.identity);
-                rand = Random.Range(0, treeChance);
-                if (rand < 1)
+                rand = Random.Range(0, 100);
+                if (rand < treeChance)
                 {
-                    rand = Random.Range(0, 3);
-                    if (rand < 2)
-                    {
-                        Instantiate(tree, new Vector3(transform.position.x + i, transform.position.y + 1.5f, transform.position.z + j), Quaternion.identity);
-                    }
-                    else
-                    {
-                        treeDirection = Random.Range(0f, 180f);
-                        Instantiate(tree1, new Vector3(transform.position.x + i, transform.position.y + 1.5f, transform.position.z + j), (Quaternion.Euler(0f, treeDirection, 0f)));
-                    }
+                    CreateTree(i, j);
                 }
             }
         }
@@ -119,7 +146,7 @@ public class LvlCreator : MonoBehaviour
     {
         for (int i = 0; i < sizeX; i++)
         {
-            for (int j = 0; j < sizeY; j++)
+            for (int j = 0; j < sizeZ; j++)
             {
                 rand = Random.Range(0, 10);
                 if (rand < 3)
@@ -128,11 +155,12 @@ public class LvlCreator : MonoBehaviour
                 }
                 else
                 {
-                    Instantiate(clayGround[1], new Vector3(transform.position.x + i, 0f, transform.position.z + j), Quaternion.identity);
-                    rand = Random.Range(0, 5);
-                    if (rand == 0)
+                    rand = Random.Range(0, 2);
+                    Instantiate(grasGround[rand], new Vector3(transform.position.x + i, 0f, transform.position.z + j), Quaternion.identity);
+                    rand = Random.Range(0, 100);
+                    if (rand < (treeChance/2))
                     {
-                        Instantiate(tree, new Vector3(transform.position.x + i, transform.position.y + 1.5f, transform.position.z + j), Quaternion.identity);
+                        CreateTree(i, j);
                     }
                 }
             }

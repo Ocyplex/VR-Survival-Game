@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Blade : MonoBehaviour
 {
+    /*
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Collision with " + collision.gameObject.name);
@@ -13,7 +14,7 @@ public class Blade : MonoBehaviour
             GameObject.Destroy(collision.gameObject);
         }
     }
-    
+    */
     /*
     private void OnTriggerEnter(Collider other)
     {

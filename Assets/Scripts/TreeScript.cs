@@ -7,6 +7,7 @@ public class TreeScript : MonoBehaviour
 
     public LvlCreator myLevelCreator;
     private bool wasCut = false;
+    private float force = 10f;
 
     private void Start()
     {
@@ -23,18 +24,19 @@ public class TreeScript : MonoBehaviour
         }
     }
     */
-    public void BeingCut()
+    public void BeingCut(Vector3 axeVector_)
     {
         if(!wasCut)
         { 
             Instantiate(myLevelCreator.apple, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z),Quaternion.identity);
-            FallTree();
+            FallTree(axeVector_);
         }
     }
 
-    private void FallTree()
+    private void FallTree(Vector3 axeVector_)
     {
         gameObject.GetComponent<Rigidbody>().useGravity = true;
-        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        Vector3 forceVector = new Vector3(transform.position.x, transform.position.y, transform.position.z) - axeVector_;
+        GetComponent<Rigidbody>().AddForce(forceVector * force);
     }
 }

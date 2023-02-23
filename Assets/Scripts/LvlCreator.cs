@@ -16,7 +16,7 @@ public class LvlCreator : MonoBehaviour
     public GameObject tree;
     public GameObject tree1;
     public int treeChance = 5;
-    private float treePosY = 3.65f;
+    private float treePosY = 3.51f;
     public GameObject apple;
 
 
@@ -60,8 +60,8 @@ public class LvlCreator : MonoBehaviour
                 x = x + 10;
             }
         }
-        CreateWallSockets();
-        CreateRoofSockets();
+        //CreateWallSockets();
+        //CreateRoofSockets();
     }
 
     public void CreateStoneTerrain()

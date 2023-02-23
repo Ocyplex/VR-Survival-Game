@@ -7,6 +7,7 @@ public class AppleScript : MonoBehaviour
 
     public PlayerStatus myPlayerStatus;
     private int foodValue = 15;
+    public AudioSource eatSoundSource;
 
     private void Start()
     {
@@ -18,22 +19,17 @@ public class AppleScript : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, 0.2f); //DrawWireSphere
     }
-    
-    private void OnCollisionEnter(Collision collision) //if object moves near head
-    {
-        if(collision.gameObject.GetComponent<Camera>())
-        {
-            myPlayerStatus.EatFood(foodValue);
-            Destroy(this);
-        }
-    }
+
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.GetComponent<Camera>())
         {
             myPlayerStatus.EatFood(foodValue);
-            Destroy(this);
+            eatSoundSource.Play(0);
+            Debug.Log("Apple eaten");
+            Destroy(gameObject);
         }
     }
 }

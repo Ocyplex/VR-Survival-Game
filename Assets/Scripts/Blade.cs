@@ -4,24 +4,21 @@ using UnityEngine;
 
 public class Blade : MonoBehaviour
 {
-    /*
+
+    private AxeScript myAxe;
+
+    private void Start()
+    {
+        myAxe = GetComponentInParent<AxeScript>();
+    }
+/*
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision with " + collision.gameObject.name);
-        GameObject.Destroy(collision.gameObject,2f);
-        if (collision.gameObject.GetComponent<TreeScript>()) 
+        Debug.Log("Collision with" + collision.gameObject.name);
+        if (collision.gameObject.GetComponent<TreeScript>())
         {
-            GameObject.Destroy(collision.gameObject);
-        }
-    }
-    */
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Collision with " + other.gameObject.name);
-        if (other.gameObject.GetComponent<TreeScript>())
-        {
-            GameObject.Destroy(other.gameObject);
+            collision.gameObject.GetComponent<TreeScript>().BeingCut(new Vector3(transform.position.x,transform.position.y,transform.position.z));
+            myAxe.axeSound.Play(0);
         }
     }
     */

@@ -14,6 +14,7 @@ public class PlayerStatus : MonoBehaviour
     public TextMeshProUGUI hungerStatusText;
     public TextMeshProUGUI StaminaStatusText;
     public SceneGameManager mySceneGameManager;
+    public LvlCreator myLvlCreator;
 
 
     public GameObject myPostionGO;
@@ -29,6 +30,7 @@ public class PlayerStatus : MonoBehaviour
 
     void Start()
     {
+        myLvlCreator = FindObjectOfType<LvlCreator>();
         StartStatus();
         myOldPosition = myPostionGO.transform.position;
     }
@@ -59,9 +61,10 @@ public class PlayerStatus : MonoBehaviour
     public void PlayerMoved(Vector3 currentPostion_, Vector3 newPosition_)
     {
         float distance = Vector3.Distance(newPosition_, currentPostion_);
-        Debug.Log("Player moved distance: " + distance);
+        //Debug.Log("Player moved distance: " + distance);
         staminaStatus = staminaStatus - Mathf.Round(distance);
         StatusChanged(healthStatus, thirstStatus, hungerStatus, staminaStatus);
+        ActivateBuildingSphere();
     }
 
 
@@ -69,10 +72,11 @@ public class PlayerStatus : MonoBehaviour
     {
         if (myOldPosition != myPostionGO.transform.position)
         {
-            Debug.Log("Position OLD X:" + myOldPosition.x + " Y:" + myOldPosition.y + " Z:" + myOldPosition.z);
+            //Debug.Log("Position OLD X:" + myOldPosition.x + " Y:" + myOldPosition.y + " Z:" + myOldPosition.z);
             PlayerMoved(myPostionGO.transform.position, myOldPosition);
             myOldPosition = myPostionGO.transform.position;
-            Debug.Log("Position new X:" + myOldPosition.x + " Y:" + myOldPosition.y + " Z:" + myOldPosition.z);
+            //Debug.Log("Position new X:" + myOldPosition.x + " Y:" + myOldPosition.y + " Z:" + myOldPosition.z);
+            //ActivateBuildingSphere();
         }
         else
         {
@@ -131,5 +135,23 @@ public class PlayerStatus : MonoBehaviour
             }
             StatusChanged(healthStatus, thirstStatus, hungerStatus, staminaStatus);
         }
+    }
+
+    public void ActivateBuildingSphere()
+    {
+        int activatedSockets = 0;
+        for (int i = 0; i < myLvlCreator.wallSocketList.Count;i++)
+        { 
+            if( Vector3.Distance(myOldPosition, myLvlCreator.wallSocketList[i].transform.position) < 3.0f)
+            {
+                myLvlCreator.wallSocketList[i].ActivateSphereAndScript();
+                activatedSockets++;
+            }
+            else
+            {
+                myLvlCreator.wallSocketList[i].DeactivateSphereAndScript();
+            }
+        }
+        Debug.Log("Activated " + activatedSockets + " sockets");
     }
 }

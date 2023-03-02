@@ -7,7 +7,7 @@ public class TreeScript : MonoBehaviour
 
     public LvlCreator myLevelCreator;
     private bool wasCut = false;
-    private float force = 10f;
+    private float force = 5f;
 
     private void Start()
     {

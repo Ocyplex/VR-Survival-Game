@@ -8,6 +8,7 @@ public class LvlCreator : MonoBehaviour
     public GameObject[] grasGround = new GameObject[2];
     public GameObject[] stoneGround = new GameObject[2];
     public GameObject[] clayGround = new GameObject[2];
+    public List<WallSocket> wallSocketList = new List<WallSocket>();
 
     public GameObject myWallSocket;
     public GameObject myRoofSocket;
@@ -60,7 +61,7 @@ public class LvlCreator : MonoBehaviour
                 x = x + 10;
             }
         }
-        //CreateWallSockets();
+        CreateWallSockets();
         //CreateRoofSockets();
     }
 

@@ -25,7 +25,7 @@ public class NeedsTimer : MonoBehaviour
             {
                 timeLeft = resetTime;
                 myPlayerStatus.RestoreStamina(10);
-                Debug.Log("Stamina restored");
+                //Debug.Log("Stamina restored");
                 hungerInt++;
                 IncreaseHunger();
             }
